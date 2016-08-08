@@ -1,0 +1,45 @@
+DT[ V2 == "A"]	Select all rows that have value A in column.
+DT[ V2 %in% c("A","C")]	Select all rows that have the value A or C in column V2.  
+DT[,V2]	Select column V2 is returned as a vector.
+DT[,.(V2,V3)]	Select columns V2 and V3 returned as a data.table.
+DT[,sum(V1)]	Return the sum of all elements of column V1 in a vector.
+DT[,.(sum(V1),sd(V3))]	Return the sum of all elements of column V1 and the standard deviation of V3 in a data.table.  
+DT[,.(Agg = sum(V1), Sd.V3 = sd(V3))]	Select sum of all elements of column V1 and the standard deviation of V3 in a data.table.
+DT[,.(V1, Sd.V3 = sd(V3))]	Select column V1, and compute std. dev. of V3, which returns a single value and gets recycled.  
+DT[,{print(V2)  plot(V3) NULL}]	Print column V2 and plot V3.
+DT[,.(V4.Sum = sum(V4)),by=V1]	Calculate the sum of V4, for every group in V1. 
+DT[,.(V4.Sum = sum(V4)),by=.(V1,V2)]	Calculate the sum of V4, but for every group in V1 and V2.
+DT[,.(sum(V4)),by=sign(V1-1)]	Calculate the sum of V4, for every group in sign(V1-1). 
+DT[,.(V4.Sum = sum(V4)),by=sign(V1-1)]	Calculate the sum of V4, for every group in sign(V1-1). 
+DT[1:5,.(V4.Sum = sum(V4)),by=V1]	Calculate the sum of V4, for every group in   V1, after subsetting on the first five rows.
+DT[,.N,by=V1]	Count the number of rows for every group in  V1. 
+DT[, V1 := round(exp(V1),2)]	Column V1 is updated by what is after :=.
+DT[, V1 := NULL]	Remove column V1. Returns the result invisibly.
+DT[, c("V1","V2") := NULL]	Remove columns V1 and V2. 
+DT[, (Cols.chosen) := NULL]	Delete the columns specified in the Cols.chosen.
+setkey(DT,V2)	Set a key on column V2. 
+DT["A"]	Return all the rows where the key column has the value A.
+DT[c("A","C")]	Return all the rows where the key column  has the value A or C. 
+DT["A", mult ="first"]	Return first row of all rows that match the value A in the key column.
+DT["A", mult = "last"]	Return last row of all rows that match the value A in the key column. 
+DT[c("A","D")]	Return all the rows where the key column  has the  value A or D.
+DT[c("A","C"), sum(V4)]	Return one total sum of column V4, for the rows of the key columns  that have values  A or C. 
+DT[c("A","C"), sum(V4), by=.EACHI]	Return one  sum of column V4, for  rows of the key column that have  value  A and nother sum for  rows of the key column that have value C.
+setkey(DT,V1,V2)	Sort by column V1 and then by column V2 within each group of V1 (returned invisible).
+DT[.(2,"C")]	Select rows that have value 2 for first key and value C for second key.
+DT[.(2,c("A","C"))]	Select rows that have value 2 for first key and value A or C for second key.
+DT[.N-1]	Return the penultimate row of the  data.table.  
+DT[,.N]	Returns the number of rows. 
+DT[,.(V2,V3)]	Columns V2 and V3 returned as a data table. Equivalent to:  DT[,list(V2,V3)].
+DT[, mean(V3),  by=.(V1,V2)]	Return  result in j, grouped by all possible combinations of groups specified in by.
+DT[, print(.SD), by=V2] 	Look at what .SD contains.
+DT[,.SD[c(1,.N)], by=V2]	Select first and last row, grouped by column V2.
+DT[, lapply(.SD, sum), by=V2]	Calculate the sum of all columns in .SD  grouped by V2. 
+DT[, lapply(.SD, sum), by=V2, .SDCols = c("V3","V4"))]	Calculate the sum of all columns in .SD  grouped by V2, for columns V3 and V4.
+DT<-DT[, .(V4.Sum = sum(V4)),by=V1] DT[V4.Sum > 40] 	Without chaining, select sum of V4, grouped by V1, Then selec group > 40.
+DT[, .(V4.Sum = sum(V4)),   by=V1][V4.Sum > 40 ]	Using chaining, select sum of V4, grouped by V1, Then selec group > 40.
+DT[, .(V4.Sum = sum(V4)),  by=V1][order(-V1)]	Select sum of V4, grouped by V1, Then order results on V1.
+setnames(DT,"old","new")[]	Change the name of colums old to new; then print result to screen.
+setnames(DT,"V2","Rating")	Set name of column V2 to Rating.
+setnames(DT,c("V2","V3"), c("Rating","DataCamp"))	Change both V2 and V3  columns names.
+setcolorder(DT, "neworder")  c("V2","V1","V4","V3")) 	Change column order.
